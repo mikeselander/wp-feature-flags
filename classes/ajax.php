@@ -1,13 +1,13 @@
 <?php
 /**
- * Class to register, load, and display an admin interface.
+ * Class to handle all AJAX actions.
  *
  * @package WP Feature Flags.
  */
 
 namespace WP_Feature_Flags;
 
-class Admin {
+class Ajax {
 	/**
 	 * Access to plugin definitions.
 	 *
@@ -41,19 +41,13 @@ class Admin {
 		return $this;
 	}
 
-	public function register_flag_page() {
+	private function check_request() {
 
 	}
 
-	public function register_network_admin_page() {
+	public function check_flag_sandbox() {
 
 	}
 
-	public function flag_page() {
 
-	}
-
-	private function flag_row() {
-
-	}
 }
