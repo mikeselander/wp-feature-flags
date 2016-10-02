@@ -44,4 +44,7 @@ plugin()->set_definitions(
 	)
 );
 
-plugin()->register_hooks( new Admin() )
+// Load helpers
+require_once 'helpers/utilities.php';
+
+plugin()->register_hooks( new Admin() );
