@@ -86,7 +86,7 @@ class FeatureListTable extends \WP_List_Table {
 		$data = [];
 
 		$flag_statuses = $this->feature_flags->get_flag_statuses();
-		$all_flags     = $this->feature_flags->get_flags();
+		$all_flags     = $this->feature_flags->get_features();
 
 		foreach ( $all_flags as $flag ) {
 			$data[] = [

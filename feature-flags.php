@@ -72,4 +72,5 @@ plugin()->set_definitions(
 // Load helpers
 require_once 'helpers/utilities.php';
 
-plugin()->register_hooks( new Admin() );
+plugin()->register_hooks( new Admin() )
+        ->register_hooks( new Ajax() );

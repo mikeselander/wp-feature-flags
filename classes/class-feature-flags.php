@@ -18,8 +18,18 @@ class FeatureFlags {
 	 */
 	private static $instance = null;
 
+	/**
+	 * Flags option name.
+	 *
+	 * @var string
+	 */
 	public $flags_option = 'feature_flags';
 
+	/**
+	 * Hold all registered flags.
+	 *
+	 * @var array
+	 */
 	public $flags = [];
 
 	/**
@@ -34,43 +44,78 @@ class FeatureFlags {
 		return self::$instance;
 	}
 
-	public function register_flag( $flag ) {
+	/**
+	 * Register a feature for use in admin list and reference.
+	 *
+	 * @param object $flag Flag data [ id, title, description, auto_enable ]
+	 * @return bool Success or failure
+	 */
+	public function register_feature( $flag ) {
 		// if we have nothing to parse, bounce.
 		if ( empty( $flag ) ) {
 			return false;
 		}
 
-		// If default enabled is turned on, and the flag has not been enabled yet, enable it.
-		if ( $flag->auto_enabled ) {
-			$this->enable_flag( $flag->id );
-		}
-
 		// Add this flag to our filter of all flags.
 		$this->flags[] = $flag;
+
+		// If our flag is already registered in our option, skip next step.
+		if ( isset( $this->get_flag_statuses()[ $flag->id ] ) ) {
+			return true;
+		}
+
+		// Register our option in our setting and enable it if need be.
+		if ( $flag->auto_enabled ) {
+			$this->enable_flag( $flag->id );
+		} else {
+			$this->disable_flag( $flag->id );
+		}
 
 		return true;
 	}
 
-	public function enable_flag( $flag ) {
-		$this->update_flag( $flag, 'enabled' );
-		do_action( "enable_{$flag}_flag" );
+	/**
+	 * Turn a flag on.
+	 *
+	 * @param string $flag Flag ID/slug.
+	 */
+	public function enable_flag( $flag_id ) {
+		$this->update_flag( $flag_id, 'enabled' );
+		do_action( "enable_{$flag_id}_flag" );
 	}
 
+	/**
+	 * Turn a flag off.
+	 *
+	 * @param string $flag Flag ID/slug.
+	 */
 	public function disable_flag( $flag ) {
 		$this->update_flag( $flag, 'disabled' );
 		do_action( "disable_{$flag}_flag" );
 	}
 
+	/**
+	 * Update a flag's status in our option.
+	 *
+	 * @param string $flag Flag ID/slug.
+	 * @param string $status New status (enabled or disabled).
+	 */
 	private function update_flag( $flag, $status ) {
-		$all_flags = $this->get_flag_statuses();
+		$all_flags = (array) $this->get_flag_statuses();
 
-		// If we don't have a value or the value is not the status - update it.
+		// If we don't have a value or the value is not the status attempted - update it.
 		if ( ! isset( $all_flags[ $flag ] ) || $status !== $all_flags[ $flag ] ) {
 			$all_flags[ $flag ] = $status;
 			update_option( $this->flags_option, json_encode( $all_flags ), true );
 		}
 	}
 
+	/**
+	 * Is this flag enabled?
+	 *
+	 * @param string $flag Flag ID/slug.
+	 * @return bool Enabled (true) or Disabled (false)
+	 */
 	public function flag_enabled( $flag ) {
 		$flag_statuses = $this->get_flag_statuses();
 		$all_flags     = apply_filters( 'available_feature_flags', [] );
@@ -99,6 +144,12 @@ class FeatureFlags {
 		return false;
 	}
 
+	/**
+	 * Is this flag enabled network-wide?
+	 *
+	 * @param string $flag Flag ID/slug.
+	 * @return bool Enabled (true) or Disabled (false)
+	 */
 	public function flag_network_enabled( $flag ) {
 		if ( ! is_multisite() ) {
 			return false;
@@ -107,21 +158,41 @@ class FeatureFlags {
 		return false;
 	}
 
+	/**
+	 * Enable a feature for every site in a network.
+	 *
+	 * @return bool success of enabling.
+	 */
 	public function network_enable_flag() {
 		if ( ! is_multisite() ) {
 			return false;
 		}
 	}
 
+	/**
+	 * Override flag status for one page load.
+	 *
+	 * @param string $flag Flag ID/name.
+	 */
 	public function spoof_flag_enabled( $flag ) {
 
 	}
 
+	/**
+	 * Get all current flag statuses from our option.
+	 *
+	 * @return array All flag statuses.
+	 */
 	public function get_flag_statuses() {
-		return json_decode( get_option( $this->flags_option, true ) );
+		return (array) json_decode( get_option( $this->flags_option ), true );
 	}
 
-	public function get_flags() {
+	/**
+	 * Getter for all registered features.
+	 *
+	 * @return array Flags registered with the plugins
+	 */
+	public function get_features() {
 		return $this->flags;
 	}
 

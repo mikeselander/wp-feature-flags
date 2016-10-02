@@ -11,7 +11,7 @@ class Admin {
 	/**
 	 * Access to plugin definitions.
 	 *
-	 * @var TheSun_Post_Cloner_Plugin
+	 * @var Plugin
 	 * @access private
 	 */
 	private $plugin;
@@ -44,6 +44,9 @@ class Admin {
 		return $this;
 	}
 
+	/**
+	 * Register a site settings page.
+	 */
 	public function register_flag_page() {
 		add_submenu_page(
 			'options-general.php',
@@ -55,10 +58,16 @@ class Admin {
 		);
 	}
 
+	/**
+	 * Register a network settings page.
+	 */
 	public function register_network_admin_page() {
 
 	}
 
+	/**
+	 * Print our admin page and list table.
+	 */
 	public function admin_page() {
 		$list_table = new FeatureListTable();
 		$list_table->prepare_items();
