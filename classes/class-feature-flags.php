@@ -9,7 +9,30 @@ namespace WP_Feature_Flags;
 
 class FeatureFlags {
 
+	/**
+	 * instance
+	 * Hold our class instance for single instantiation.
+	 *
+	 * @var PetitionCount
+	 * @access private
+	 */
+	private static $instance = null;
+
 	public $flags_option = 'feature_flags';
+
+	public $flags = [];
+
+	/**
+	 * Set and get an instance of this class.
+	 *
+	 * @return FeatureFlags
+	 */
+	public static function get_instance() {
+		if ( null === self::$instance ) {
+			self::$instance = new self();
+		}
+		return self::$instance;
+	}
 
 	public function register_flag( $flag ) {
 		// if we have nothing to parse, bounce.
@@ -18,15 +41,12 @@ class FeatureFlags {
 		}
 
 		// If default enabled is turned on, and the flag has not been enabled yet, enable it.
-		if ( $flag->auto_enabled && ! $this->flag_enabled( $flag->id ) ) {
-			$this->enable_flag( $flag->id )
+		if ( $flag->auto_enabled ) {
+			$this->enable_flag( $flag->id );
 		}
 
 		// Add this flag to our filter of all flags.
-		add_filter( 'available_feature_flags', function( $flags ){
-			$flags[] = $flag;
-			return $flags;
-		});
+		$this->flags[] = $flag;
 
 		return true;
 	}
@@ -42,7 +62,7 @@ class FeatureFlags {
 	}
 
 	private function update_flag( $flag, $status ) {
-		$all_flags = $this->get_flags();
+		$all_flags = $this->get_flag_statuses();
 
 		// If we don't have a value or the value is not the status - update it.
 		if ( ! isset( $all_flags[ $flag ] ) || $status !== $all_flags[ $flag ] ) {
@@ -52,7 +72,7 @@ class FeatureFlags {
 	}
 
 	public function flag_enabled( $flag ) {
-		$flag_statuses = $this->get_flags();
+		$flag_statuses = $this->get_flag_statuses();
 		$all_flags     = apply_filters( 'available_feature_flags', [] );
 
 		// Does this flag exist?
@@ -97,8 +117,12 @@ class FeatureFlags {
 
 	}
 
+	public function get_flag_statuses() {
+		return json_decode( get_option( $this->flags_option, true ) );
+	}
+
 	public function get_flags() {
-		return json_decode( get_option( $this->flags_option ) );
+		return $this->flags;
 	}
 
 }

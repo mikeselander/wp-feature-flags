@@ -11,12 +11,17 @@ if( ! class_exists( 'WP_List_Table' ) ) {
 	require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
 }
 
-class Feature_List_Table extends \WP_List_Table {
+class FeatureListTable extends \WP_List_Table {
 
 	private $feature_flags;
 
 	public function __construct() {
-		$this->feature_flags = new Feature_Flags;
+		$this->feature_flags = FeatureFlags::get_instance();
+
+		parent::__construct( [
+			'singular' => __( 'Feature Flag', 'wp-feature-flags' ),
+			'plural'   => __( 'Feature Flags', 'wp-feature-flags' ),
+		] );
 	}
 
 	/**
@@ -39,7 +44,7 @@ class Feature_List_Table extends \WP_List_Table {
 			'per_page'    => $perPage
 		) );
 
-		$data = array_slice( $data,( ( $currentPage - 1 ) * $perPage ), $perPage );
+		$data = array_slice( $data, ( ( $currentPage - 1 ) * $perPage ), $perPage );
 
 		$this->_column_headers = array( $columns, $hidden, $sortable );
 		$this->items           = $data;
@@ -80,15 +85,15 @@ class Feature_List_Table extends \WP_List_Table {
 	private function table_data() {
 		$data = [];
 
-		$flag_statuses = $this->feature_flags;
-		$all_flags     = apply_filters( 'available_feature_flags', [] );
+		$flag_statuses = $this->feature_flags->get_flag_statuses();
+		$all_flags     = $this->feature_flags->get_flags();
 
 		foreach ( $all_flags as $flag ) {
 			$data[] = [
-				'id'           => $flag->id,
-				'title'        => $flag->title,
-				'description'  => $flag->description,
-				'enabled'      => $flag_statuses[ $flag['id'] ],
+				'id'           => esc_html( $flag->id ),
+				'title'        => esc_html( $flag->title ),
+				'description'  => esc_html( $flag->description ),
+				'enabled'      => $flag_statuses[ $flag->id ],
 				'auto_enabled' => $flag->auto_enabled,
 			];
 		}

@@ -11,7 +11,32 @@
  * Author URI: https://mikeselander.com
  */
 
-namespace WP_Feature_Flags
+namespace WP_Feature_Flags;
+
+/**
+ * Autoloader callback.
+ *
+ * Converts a class name to a file path and requires it if it exists.
+ *
+ * @param string $class Class name.
+ */
+function feature_flags_autoloader( $class ) {
+	$namespace = explode( '\\', $class );
+
+	if ( __NAMESPACE__ !== $namespace[0] ){
+		return;
+	}
+
+	$class = str_replace( __NAMESPACE__ . '\\', '', $class );
+
+	$class = strtolower( preg_replace( '/(?<!^)([A-Z])/', '-\\1', $class ) );
+	$file  = dirname( __FILE__ ) . '/classes/class-' . $class . '.php';
+
+	if ( is_readable( $file ) ) {
+		require_once( $file );
+	}
+}
+spl_autoload_register( __NAMESPACE__ . '\feature_flags_autoloader' );
 
 /**
  * Retrieve the plugin instance.

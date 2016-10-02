@@ -30,7 +30,18 @@ class Admin {
 	public function hooks() {
 		$this->definitions = $this->plugin->get_definitions();
 
-		add_action( 'admin_init', [ $this, 'register_flag_page' ] );
+		add_action( 'admin_menu', [ $this, 'register_flag_page' ] );
+	}
+
+	/**
+	 * Set a reference to the main plugin instance.
+	 *
+	 * @param $plugin Plugin instance.
+	 * @return Ajax instance
+	 */
+	public function set_plugin( $plugin ) {
+		$this->plugin = $plugin;
+		return $this;
 	}
 
 	public function register_flag_page() {
@@ -40,16 +51,16 @@ class Admin {
 			__( 'Feature Flags', 'wp-feature-flags' ),
 			'manage_options',
 			'feature_flags',
-			[ $this, 'flag_page' ]
-		)
+			[ $this, 'admin_page' ]
+		);
 	}
 
 	public function register_network_admin_page() {
 
 	}
 
-	public function flag_page() {
-		$list_table = new Feature_List_Table();
+	public function admin_page() {
+		$list_table = new FeatureListTable();
 		$list_table->prepare_items();
 		?>
 		<div class="wrap">

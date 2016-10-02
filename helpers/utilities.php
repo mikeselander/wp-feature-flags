@@ -7,8 +7,8 @@
 
 namespace WP_Feature_Flags;
 
-function is_feature_enabled( $flag ) {
-	return ( new FeatureFlags() )->flag_enabled( $feature );
+function is_feature_enabled( $feature ) {
+	return FeatureFlags::get_instance()->flag_enabled( $feature );
 }
 
 function register_feature( $slug, $name, $description = '', $auto_enable = false ) {
@@ -25,5 +25,5 @@ function register_feature( $slug, $name, $description = '', $auto_enable = false
 		'auto_enabled' => $auto_enable,
 	];
 
-	return ( new FeatureFlags() )->register_flag( $feature );
+	return FeatureFlags::get_instance()->register_flag( $feature );
 }
