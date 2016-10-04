@@ -57,8 +57,7 @@ class FeatureListTable extends \WP_List_Table {
 	 */
 	public function get_columns() {
 		$columns = array(
-			'id'          => 'ID',
-			'title'       => 'Title',
+ 			'title'       => 'Title',
 			'description' => 'Description',
 			'enabled'     => 'Enabled',
 		);
@@ -90,28 +89,29 @@ class FeatureListTable extends \WP_List_Table {
 
 		foreach ( $all_flags as $flag ) {
 			$data[] = [
-				'id'           => esc_html( $flag->id ),
-				'title'        => esc_html( $flag->title ),
+				'title'        => esc_html( $flag->title ) . "<br><i>(" . esc_html( $flag->id ) . ")</i>",
 				'description'  => esc_html( $flag->description ),
 				'enabled'      => $flag_statuses[ $flag->id ],
-				'auto_enabled' => $flag->auto_enabled,
+				'auto_enabled' => $this->on_off_switch( $flag->auto_enabled ),
 			];
 		}
 
 		return $data;
 	}
 
+	public function on_off_switch( $enabled ) {
+		return $enabled;
+	}
+
 	/**
 	 * Define what data to show on each column of the table.
 	 *
-	 * @param  array $item        Data
+	 * @param  array $item Data
 	 * @param  String $column_name - Current column name
-	 *
 	 * @return Mixed
 	 */
 	public function column_default( $item, $column_name ) {
 		switch( $column_name ) {
-			case 'id':
 			case 'title':
 			case 'description':
 			case 'enabled':

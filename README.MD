@@ -2,6 +2,7 @@
 
 ## The Problem:
  - You don't always have control over when code is deployed when you don't own the hosting
+ - Features need an activation method to enable or disable features, options, or plugins
  - Changes have a potential to 500 a site if not managed carefully or if making big changes
  - Features may only need to be enabled or released on a per-site basis
  - Want to be able to reverse a feature or change without having to deploy more code or revert
@@ -9,7 +10,7 @@
 
 
 ## The solution:
-Add feature flag interface available in the admin area so that we can enable or disbale large changes when we damn well feel like it. Upon enabling, the feature flag will first verify that the change will not 500 the site and if it fails it should not be allowed through. The interface will be a simple WP list row with one action - turn the flag on or off.
+Add feature flag interface available in the admin area so that we can enable or disbale large changes when we damn well feel like it. Think ot it as a plugin-style activation and deactivation for features that can live anywhere in the codebase. Upon enabling, the feature flag will first verify that the change will not 500 the site and if it fails it should not be allowed through. The interface will be a simple WP list row with one action - turn the flag on or off.
 
 
 ## TODO:

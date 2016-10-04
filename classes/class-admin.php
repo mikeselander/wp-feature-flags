@@ -74,7 +74,7 @@ class Admin {
 		?>
 		<div class="wrap">
 			<div id="icon-users" class="icon32"></div>
-			<h2><?php esc_html_e( 'All Feature Flags', 'wp-feature-flags' ); ?></h2>
+			<h2><?php esc_html_e( 'Feature Flags', 'wp-feature-flags' ); ?></h2>
 			<?php $list_table->display(); ?>
 		</div>
 		<?php
