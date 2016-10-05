@@ -1,0 +1,37 @@
+.feature-toggle-wrapper .feature-toggle {
+  display: none; }
+  .feature-toggle-wrapper .feature-toggle, .feature-toggle-wrapper .feature-toggle:after, .feature-toggle-wrapper .feature-toggle:before, .feature-toggle-wrapper .feature-toggle *, .feature-toggle-wrapper .feature-toggle *:after, .feature-toggle-wrapper .feature-toggle *:before, .feature-toggle-wrapper .feature-toggle + .toggle-button {
+    box-sizing: border-box; }
+    .feature-toggle-wrapper .feature-toggle::selection, .feature-toggle-wrapper .feature-toggle:after::selection, .feature-toggle-wrapper .feature-toggle:before::selection, .feature-toggle-wrapper .feature-toggle *::selection, .feature-toggle-wrapper .feature-toggle *:after::selection, .feature-toggle-wrapper .feature-toggle *:before::selection, .feature-toggle-wrapper .feature-toggle + .toggle-button::selection {
+      background: none; }
+  .feature-toggle-wrapper .feature-toggle + .toggle-button {
+    outline: 0;
+    display: block;
+    width: 4em;
+    height: 2em;
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+    background: #f0f0f0;
+    border-radius: 2em;
+    padding: 2px;
+    transition: all .4s ease; }
+    .feature-toggle-wrapper .feature-toggle + .toggle-button:after, .feature-toggle-wrapper .feature-toggle + .toggle-button:before {
+      position: relative;
+      display: block;
+      content: "";
+      width: 50%;
+      height: 100%; }
+    .feature-toggle-wrapper .feature-toggle + .toggle-button:after {
+      left: 0;
+      border-radius: 50%;
+      background: #fff;
+      transition: all .2s ease; }
+    .feature-toggle-wrapper .feature-toggle + .toggle-button:before {
+      display: none; }
+  .feature-toggle-wrapper .feature-toggle:checked + .toggle-button {
+    background: #9FD6AE; }
+    .feature-toggle-wrapper .feature-toggle:checked + .toggle-button:after {
+      left: 50%; }
+
+/*# sourceMappingURL=feature-flags.css.map */

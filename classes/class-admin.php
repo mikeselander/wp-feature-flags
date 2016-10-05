@@ -31,6 +31,7 @@ class Admin {
 		$this->definitions = $this->plugin->get_definitions();
 
 		add_action( 'admin_menu', [ $this, 'register_flag_page' ] );
+		add_action( 'admin_enqueue_scripts', [ $this, 'load_styles' ], 10, 1 );
 	}
 
 	/**
@@ -56,6 +57,17 @@ class Admin {
 			'feature_flags',
 			[ $this, 'admin_page' ]
 		);
+	}
+
+	/**
+	 * Load our styles in the admin area.
+	 */
+	public function load_styles( $page ) {
+		// Only load styles on the edit screen.
+//		if ( 'options-general.php' !== $page ) {
+//			return;
+//		}
+		wp_enqueue_style( 'feature_flag_styles', $this->definitions->assets_url . '/feature-flags.css', [], $this->definitions->version );
 	}
 
 	/**

@@ -22,8 +22,8 @@ function is_feature_enabled( $feature ) {
  *
  * @param string $slug Feature ID/slug - this is what you'll use to identify when making checks.
  * @param string $name Human-readable name of feature.
- * @param string $description Human-readable description of feature.
- * @param bool   $auto_enable Whether this feature should default to on or not.
+ * @param string $description Human-readable description of feature. Optional.
+ * @param bool   $auto_enable Whether this feature should default to on or not. Optional.
  * @return bool Success of registration
  */
 function register_feature( $slug, $name, $description = '', $auto_enable = false ) {

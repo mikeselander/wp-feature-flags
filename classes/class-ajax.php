@@ -49,5 +49,12 @@ class Ajax {
 
 	}
 
+	public function enable_flag() {
+		
+	}
+	
+	public function disable_flag() {
+		
+	}
 
 }

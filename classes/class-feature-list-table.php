@@ -91,16 +91,31 @@ class FeatureListTable extends \WP_List_Table {
 			$data[] = [
 				'title'        => esc_html( $flag->title ) . "<br><i>(" . esc_html( $flag->id ) . ")</i>",
 				'description'  => esc_html( $flag->description ),
-				'enabled'      => $flag_statuses[ $flag->id ],
-				'auto_enabled' => $this->on_off_switch( $flag->auto_enabled ),
+				'enabled'      => $this->on_off_switch( $flag->id, $flag_statuses[ $flag->id ], $flag->auto_enabled ),
 			];
 		}
 
 		return $data;
 	}
 
-	public function on_off_switch( $enabled ) {
-		return $enabled;
+	public function on_off_switch( $id, $enabled, $auto_enabled ) {
+		$wrapper_classes = [ 'feature-toggle-wrapper' ];
+		$status = $enabled;
+
+		// If the feature is auto-enabled we want to disable access to the trigger.
+		if ( $auto_enabled ) {
+			$wrapper_classes[] = 'disabled';
+			$status            = 'enabled';
+		}
+
+		ob_start();
+		?>
+		<div class="<?php echo esc_attr( join( ' ', $wrapper_classes ) ); ?>">
+			<input id="toggle-<?php echo esc_attr( $id ); ?>" type="checkbox" class="feature-toggle" <?php checked( 'enabled', $status ); ?>>
+			<label for="toggle-<?php echo esc_attr( $id ); ?>" class="toggle-button"></label>
+		</div>
+		<?php
+		return ob_get_clean();
 	}
 
 	/**
