@@ -38,7 +38,7 @@ class Admin {
 	 * Set a reference to the main plugin instance.
 	 *
 	 * @param $plugin Plugin instance.
-	 * @return Ajax instance
+	 * @return Admin
 	 */
 	public function set_plugin( $plugin ) {
 		$this->plugin = $plugin;
@@ -53,7 +53,7 @@ class Admin {
 			'options-general.php',
 			__( 'Feature Flags', 'wp-feature-flags' ),
 			__( 'Feature Flags', 'wp-feature-flags' ),
-			'manage_options',
+			apply_filters( 'feature-flags-can-flag-capability', 'manage_options' ),
 			'feature_flags',
 			[ $this, 'admin_page' ]
 		);
@@ -67,7 +67,13 @@ class Admin {
 //		if ( 'options-general.php' !== $page ) {
 //			return;
 //		}
-		wp_enqueue_style( 'feature_flag_styles', $this->definitions->assets_url . '/feature-flags.css', [], $this->definitions->version );
+
+		wp_enqueue_style( 'feature-flag-styles', $this->definitions->assets_url . '/feature-flags.css', [], $this->definitions->version );
+		wp_enqueue_script( 'feature-flag-script', $this->definitions->assets_url . '/feature-flags.js', [], $this->definitions->version );
+
+		wp_localize_script( 'feature-flag-script', 'featureFlags', [
+			'nonce' => wp_create_nonce( 'feature-flags-ajax' ),
+		] );
 	}
 
 	/**
@@ -90,5 +96,21 @@ class Admin {
 			<?php $list_table->display(); ?>
 		</div>
 		<?php
+	}
+
+	/**
+	 *
+	 *
+	 * @return bool
+	 */
+	public static function can_user_flag() {
+
+		/**
+		 *
+		 * Minimum capability required to trigger feature flags.
+		 */
+		$capability = apply_filters( 'feature-flags-can-flag-capability', 'manage_options' );
+
+		return current_user_can( $capability );
 	}
 }

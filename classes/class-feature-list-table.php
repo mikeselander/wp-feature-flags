@@ -111,7 +111,7 @@ class FeatureListTable extends \WP_List_Table {
 		ob_start();
 		?>
 		<div class="<?php echo esc_attr( join( ' ', $wrapper_classes ) ); ?>">
-			<input id="toggle-<?php echo esc_attr( $id ); ?>" type="checkbox" class="feature-toggle" <?php checked( 'enabled', $status ); ?>>
+			<input id="toggle-<?php echo esc_attr( $id ); ?>" type="checkbox" class="feature-toggle" data-flag-id="<?php echo esc_attr( $id ); ?>" <?php checked( 'enabled', $status ); ?>>
 			<label for="toggle-<?php echo esc_attr( $id ); ?>" class="toggle-button"></label>
 		</div>
 		<?php

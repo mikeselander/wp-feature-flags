@@ -10,7 +10,7 @@ namespace WP_Feature_Flags;
 /**
  * Check whether or not a feature is enabled or disabled.
  *
- * @param string $feature
+ * @param string $featureWP_Feature_Flags
  * @return bool Enabled (true) or Disabled (false)
  */
 function is_feature_enabled( $feature ) {

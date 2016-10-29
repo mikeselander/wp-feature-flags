@@ -13,7 +13,7 @@ class FeatureFlags {
 	 * instance
 	 * Hold our class instance for single instantiation.
 	 *
-	 * @var PetitionCount
+	 * @var FeatureFlags
 	 * @access private
 	 */
 	private static $instance = null;
@@ -67,8 +67,6 @@ class FeatureFlags {
 		// Register our option in our setting and enable it if need be.
 		if ( $flag->auto_enabled ) {
 			$this->enable_flag( $flag->id );
-		} else {
-			$this->disable_flag( $flag->id );
 		}
 
 		return true;
@@ -81,7 +79,13 @@ class FeatureFlags {
 	 */
 	public function enable_flag( $flag_id ) {
 		$this->update_flag( $flag_id, 'enabled' );
-		do_action( "enable_{$flag_id}_flag" );
+
+		/**
+		 * Allow developer to run their own code after a flag has been enabled.
+		 *
+		 * @param string $flag_id Flag ID
+		 */
+		do_action( 'enable_feature_flag', $flag_id );
 	}
 
 	/**
@@ -89,9 +93,15 @@ class FeatureFlags {
 	 *
 	 * @param string $flag Flag ID/slug.
 	 */
-	public function disable_flag( $flag ) {
-		$this->update_flag( $flag, 'disabled' );
-		do_action( "disable_{$flag}_flag" );
+	public function disable_flag( $flag_id ) {
+		$this->update_flag( $flag_id, 'disabled' );
+
+		/**
+		 * Allow developer to run their own code after a flag has been disabled.
+		 *
+		 * @param string $flag_id Flag ID
+		 */
+		do_action( 'disable_feature_flag', $flag_id );
 	}
 
 	/**
@@ -122,7 +132,7 @@ class FeatureFlags {
 
 		// Does this flag exist?
 		if ( ! isset( $all_flags[ $flag ] ) ) {
-			// TODO: not sure what to return here, can't do false becuase we might have expired a flag
+			// TODO: not sure what to return here, can't do false because we might have expired a flag
 			//return false;
 		}
 
