@@ -58,7 +58,7 @@ plugin();
 
 // Set our definitions for later use.
 plugin()->set_definitions(
-	(object) array(
+	(object) [
 		'basename'   => plugin_basename( __FILE__ ),
 		'directory'  => plugin_dir_path( __FILE__ ),
 		'file'       => __FILE__,
@@ -66,7 +66,7 @@ plugin()->set_definitions(
 		'url'        => plugin_dir_url( __FILE__ ),
 		'assets_url' => plugin_dir_url( __FILE__ ) . '/assets',
 		'version'    => '1.0.0',
-	)
+	]
 );
 
 // Load helpers

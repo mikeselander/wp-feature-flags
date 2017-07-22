@@ -5,4 +5,16 @@
 
 	<!-- Add VIP-specific rules -->
 	<rule ref="WordPress-VIP" />
+
+	<!-- Ignore vendor files -->
+	 <exclude-pattern>/vendor/*</exclude-pattern>
+
+	 <rule ref="vendor/humanmade/coding-standards">
+		  <!-- Ignore namespace requirements - we have our own setup -->
+		 <exclude name="HM.Files.NamespaceDirectoryName" />
+		  <!-- Ignore VIP function names - this will never be used on VIP -->
+		 <exclude name="WordPress.VIP.RestrictedFunctions" />
+		 <!-- Ignore namespaced function file requirement -->
+		 <exclude name="HM.Files.FunctionFileName.WrongFile" />
+	 </rule>
 </ruleset>

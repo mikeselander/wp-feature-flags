@@ -34,20 +34,20 @@ class FeatureListTable extends \WP_List_Table {
 		$sortable = $this->get_sortable_columns();
 
 		$data = $this->table_data();
-		usort( $data, array( &$this, 'sort_data' ) );
+		usort( $data, [ &$this, 'sort_data' ] );
 
 		$per_page     = 20;
 		$current_page = $this->get_pagenum();
 		$total_items  = count( $data );
 
-		$this->set_pagination_args( array(
+		$this->set_pagination_args( [
 			'total_items' => $total_items,
 			'per_page'    => $per_page,
-		) );
+		] );
 
 		$data = array_slice( $data, ( ( $current_page - 1 ) * $per_page ), $per_page );
 
-		$this->_column_headers = array( $columns, $hidden, $sortable );
+		$this->_column_headers = [ $columns, $hidden, $sortable ];
 		$this->items           = $data;
 	}
 
