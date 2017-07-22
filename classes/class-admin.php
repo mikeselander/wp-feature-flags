@@ -61,12 +61,14 @@ class Admin {
 
 	/**
 	 * Load our styles in the admin area.
+	 *
+	 * @param $page
 	 */
 	public function load_styles( $page ) {
 		// Only load styles on the edit screen.
-//		if ( 'options-general.php' !== $page ) {
-//			return;
-//		}
+		if ( 'options-general.php' !== $page ) {
+			return;
+		}
 
 		wp_enqueue_style( 'feature-flag-styles', $this->definitions->assets_url . '/feature-flags.css', [], $this->definitions->version );
 		wp_enqueue_script( 'feature-flag-script', $this->definitions->assets_url . '/feature-flags.js', [], $this->definitions->version );

@@ -7,7 +7,8 @@
 
 namespace WP_Feature_Flags;
 
-if( ! class_exists( 'WP_List_Table' ) ) {
+// @todo:: this should not be in this file.
+if ( ! class_exists( 'WP_List_Table' ) ) {
 	require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
 }
 
@@ -33,20 +34,20 @@ class FeatureListTable extends \WP_List_Table {
 		$sortable = $this->get_sortable_columns();
 
 		$data = $this->table_data();
-		usort( $data, array( &$this, 'sort_data' ) );
+		usort( $data, [ &$this, 'sort_data' ] );
 
-		$perPage     = 20;
-		$currentPage = $this->get_pagenum();
-		$totalItems  = count( $data );
+		$per_page     = 20;
+		$current_page = $this->get_pagenum();
+		$total_items  = count( $data );
 
-		$this->set_pagination_args( array(
-			'total_items' => $totalItems,
-			'per_page'    => $perPage
-		) );
+		$this->set_pagination_args( [
+			'total_items' => $total_items,
+			'per_page'    => $per_page,
+		] );
 
-		$data = array_slice( $data, ( ( $currentPage - 1 ) * $perPage ), $perPage );
+		$data = array_slice( $data, ( ( $current_page - 1 ) * $per_page ), $per_page );
 
-		$this->_column_headers = array( $columns, $hidden, $sortable );
+		$this->_column_headers = [ $columns, $hidden, $sortable ];
 		$this->items           = $data;
 	}
 
@@ -56,11 +57,11 @@ class FeatureListTable extends \WP_List_Table {
 	 * @return array
 	 */
 	public function get_columns() {
-		$columns = array(
- 			'title'       => 'Title',
+		$columns = [
+			'title'       => 'Title',
 			'description' => 'Description',
 			'enabled'     => 'Enabled',
-		);
+		];
 
 		return $columns;
 	}
@@ -72,7 +73,7 @@ class FeatureListTable extends \WP_List_Table {
 	 */
 	public function get_sortable_columns() {
 		return [
-			'title' => [ 'title', false ]
+			'title' => [ 'title', false ],
 		];
 	}
 
@@ -89,9 +90,9 @@ class FeatureListTable extends \WP_List_Table {
 
 		foreach ( $all_flags as $flag ) {
 			$data[] = [
-				'title'        => esc_html( $flag->title ) . "<br><i>(" . esc_html( $flag->id ) . ")</i>",
-				'description'  => esc_html( $flag->description ),
-				'enabled'      => $this->on_off_switch( $flag->id, $flag_statuses[ $flag->id ], $flag->auto_enabled ),
+				'title'       => esc_html( $flag->title ) . '<br><i>(' . esc_html( $flag->id ) . ')</i>',
+				'description' => esc_html( $flag->description ),
+				'enabled'     => $this->on_off_switch( $flag->id, $flag_statuses[ $flag->id ], $flag->auto_enabled ),
 			];
 		}
 
@@ -126,14 +127,14 @@ class FeatureListTable extends \WP_List_Table {
 	 * @return Mixed
 	 */
 	public function column_default( $item, $column_name ) {
-		switch( $column_name ) {
+		switch ( $column_name ) {
 			case 'title':
 			case 'description':
 			case 'enabled':
 				return $item[ $column_name ];
 
 			default:
-				return print_r( $item, true ) ;
+				return print_r( $item, true );
 		}
 	}
 
@@ -145,22 +146,23 @@ class FeatureListTable extends \WP_List_Table {
 	private function sort_data( $a, $b ) {
 		// Set defaults
 		$orderby = 'title';
-		$order = 'asc';
+		$order   = 'asc';
+
+		// @todo:: nonce needed here.
 
 		// If orderby is set, use this as the sort column
-		if( ! empty( $_GET['orderby'] ) ) {
-			$orderby = $_GET['orderby'];
+		if ( ! empty( $_GET['orderby'] ) ) {
+			$orderby = sanitize_text_field( wp_unslash( $_GET['orderby'] ) );
 		}
 
 		// If order is set use this as the order
-		if( ! empty( $_GET['order'] ) ) {
-			$order = $_GET['order'];
+		if ( ! empty( $_GET['order'] ) ) {
+			$order = sanitize_text_field( wp_unslash( $_GET['order'] ) );
 		}
-
 
 		$result = strnatcmp( $a[ $orderby ], $b[ $orderby ] );
 
-		if( $order === 'asc' ) {
+		if ( 'asc' === $order ) {
 			return $result;
 		}
 
