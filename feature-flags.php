@@ -23,7 +23,7 @@ namespace WP_Feature_Flags;
 function feature_flags_autoloader( $class ) {
 	$namespace = explode( '\\', $class );
 
-	if ( __NAMESPACE__ !== $namespace[0] ){
+	if ( __NAMESPACE__ !== $namespace[0] ) {
 		return;
 	}
 
@@ -65,7 +65,7 @@ plugin()->set_definitions(
 		'slug'       => 'wp-feature-flags',
 		'url'        => plugin_dir_url( __FILE__ ),
 		'assets_url' => plugin_dir_url( __FILE__ ) . '/assets',
-		'version'    => '1.0.0'
+		'version'    => '1.0.0',
 	)
 );
 
@@ -73,4 +73,4 @@ plugin()->set_definitions(
 require_once 'helpers/utilities.php';
 
 plugin()->register_hooks( new Admin() )
-        ->register_hooks( new Ajax() );
+		->register_hooks( new Ajax() );

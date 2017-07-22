@@ -17,7 +17,7 @@ function is_feature_enabled( $feature ) {
 	return FeatureFlags::get_instance()->flag_enabled( $feature );
 }
 
-function is_feature_flagged(  $feature) {
+function is_feature_flagged( $feature ) {
 	if ( ! empty( $feature ) || ! is_string( $feature ) ) {
 		return false;
 	}

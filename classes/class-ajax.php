@@ -57,7 +57,7 @@ class Ajax {
 
 		wp_send_json_success( __( 'Flag Enabled', 'wp-feature-flags' ) );
 	}
-	
+
 	public function disable_flag() {
 		$this->check_ajax_request();
 
@@ -66,5 +66,4 @@ class Ajax {
 
 		wp_send_json_success( __( 'Flag Disabled', 'wp-feature-flags' ) );
 	}
-
 }

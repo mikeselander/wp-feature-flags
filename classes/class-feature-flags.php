@@ -116,7 +116,7 @@ class FeatureFlags {
 		// If we don't have a value or the value is not the status attempted - update it.
 		if ( ! isset( $all_flags[ $flag ] ) || $status !== $all_flags[ $flag ] ) {
 			$all_flags[ $flag ] = $status;
-			update_option( $this->flags_option, json_encode( $all_flags ), true );
+			update_option( $this->flags_option, wp_json_encode( $all_flags ), true );
 		}
 	}
 
@@ -133,7 +133,6 @@ class FeatureFlags {
 		// Does this flag exist?
 		if ( ! isset( $all_flags[ $flag ] ) ) {
 			// TODO: not sure what to return here, can't do false because we might have expired a flag
-			//return false;
 		}
 
 		// Is flag auto-enabled?
@@ -147,7 +146,7 @@ class FeatureFlags {
 		}
 
 		// Have we turned this feature on?
-		if ( $flag_statuses[ $flag ] === 'enabled' ) {
+		if ( 'enabled' === $flag_statuses[ $flag ] ) {
 			return true;
 		}
 
