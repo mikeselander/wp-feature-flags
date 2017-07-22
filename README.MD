@@ -18,6 +18,8 @@ Add feature flag interface available in the admin area so that we can enable or 
 1. Add check system
 1. Add admin interface
 1. Add sandbox so that a change can NEVER 500 a site (AJAX probably?)
+1. Convert from classes to functional where possible
+1. Allow for network vs site registration
 
 
 ## Req's
