@@ -22,7 +22,7 @@ function is_feature_flagged( $feature ) {
 		return false;
 	}
 
-	return FeatureFlags::get_instance->feature_flagged( $feature );
+	return FeatureFlags::get_instance()->feature_flagged( $feature );
 }
 
 /**
