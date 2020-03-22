@@ -1,5 +1,7 @@
 # WP Feature Flags
 
+## NOTE: this is an archived, not complete project that will likely not be picked up again. I recommend looking at https://github.com/humanmade/wp-flags for a more fleshed-out implementation.
+
 ## The Problem:
  - You don't always have control over when code is deployed when you don't own the hosting
  - Features need an activation method to enable or disable features, options, or plugins
